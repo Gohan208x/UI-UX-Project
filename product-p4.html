@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Audio | Aura Soundbar X</title>
+    <meta name="description" content="Premium audio equipment and high-end headphones.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .product-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--border-color); margin-bottom: 30px; }
+        .product-tab { padding: 10px 0; cursor: pointer; color: var(--text-muted); font-weight: 500; }
+        .product-tab.active { color: var(--accent-primary); border-bottom: 2px solid var(--accent-primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">AURA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon" id="nav-cart-btn">Cart (0)</a>
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">&#9776;</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content" id="page-content">
+
+        <section class="container" style="padding-top: 140px; padding-bottom: 80px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+                <div style="background: var(--bg-secondary); padding: 40px; border-radius: var(--radius-md);">
+                    <img src="images/product_soundbar.jpg" alt="Aura Soundbar X" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                </div>
+                <div>
+                    <p style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 10px;">Home Theater</p>
+                    <h1 style="font-size: 3rem; margin-bottom: 20px;">Aura Soundbar X</h1>
+                    <p style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 30px;">$899.00</p>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px;">Cinematic spatial audio for your living room. The Aura Soundbar X utilizes 11 custom-tuned drivers to bounce sound precisely around your room, creating an immersive 3D soundscape.</p>
+                    
+                    <button class="btn btn-primary" onclick="handleAddToCartClick(event, 'p4')" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-bottom: 40px;">Add to Cart</button>
+                    
+                    <div class="product-tabs">
+                        <div class="product-tab active" onclick="switchTab('desc-tab')">Description</div>
+                        <div class="product-tab" onclick="switchTab('reviews-tab')">Reviews</div>
+                        <div class="product-tab" onclick="switchTab('warranty-tab')">Warranty</div>
+                        <div class="product-tab" onclick="switchTab('returns-tab')">Returns</div>
+                    </div>
+                    
+                    <div id="desc-tab" class="tab-content active">
+                        <h4 style="margin-bottom: 15px;">Product Details</h4>
+                        <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Cinematic spatial audio for your living room. The Aura Soundbar X utilizes 11 custom-tuned drivers to bounce sound precisely around your room, creating an immersive 3D soundscape. Engineered with precision materials for durability and acoustic isolation.</p>
+                        <ul style="color: var(--text-muted); list-style-position: inside;">
+                            <li>Premium build quality</li>
+                            <li>Advanced acoustic tuning</li>
+                            <li>All-day battery life</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="reviews-tab" class="tab-content">
+                        <h4 style="margin-bottom: 15px;">Customer Reviews</h4>
+    
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <img src="images/avatar_indian_1.jpg" alt="Rahul W." style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 15px;">
+                                <div style="flex-grow: 1; display: flex; justify-content: space-between;">
+                                    <strong>Rahul W.</strong>
+                                    <span style="color: #FFD700;">★★★★★</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-muted); font-style: italic; padding-left: 55px;">"Completely transformed movie nights. The spatial audio effect is incredibly convincing."</p>
+                        </div>
+        
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <img src="images/avatar_indian_2.jpg" alt="Kavya G." style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 15px;">
+                                <div style="flex-grow: 1; display: flex; justify-content: space-between;">
+                                    <strong>Kavya G.</strong>
+                                    <span style="color: #FFD700;">★★★★☆</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-muted); font-style: italic; padding-left: 55px;">"Setup was a breeze. Dialogue is crystal clear even during loud action scenes."</p>
+                        </div>
+        
+                    </div>
+                    
+                    <div id="warranty-tab" class="tab-content">
+                        <h4 style="margin-bottom: 15px;">2-Year Limited Warranty</h4>
+                        <p style="color: var(--text-muted); line-height: 1.6;">Aura Audio warrants this product against defects in materials and workmanship under normal use for a period of TWO (2) YEARS from the date of retail purchase by the original end-user purchaser.</p>
+                    </div>
+                    
+                    <div id="returns-tab" class="tab-content">
+                        <h4 style="margin-bottom: 15px;">30-Day Return Policy</h4>
+                        <p style="color: var(--text-muted); line-height: 1.6;">We offer a 30-day, no-questions-asked return policy. If you aren't completely satisfied, simply return the product in its original packaging with all included accessories for a full refund. Return shipping is free.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>AURA</h3>
+                <p>Uncompromised clarity. Minimalist design. The future of audio.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="shop.html">All Products</a>
+                <a href="cart.html">Shopping Cart</a>
+                <a href="checkout-shipping.html">Checkout</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact Support</a>
+                <a href="faq.html">FAQ</a>
+                <a href="blog.html">Blog</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Info</h4>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="personas.html">UX Personas</a>
+                <a href="design-system.html">Design System</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Audio Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>

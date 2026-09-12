@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Audio | Shipping Details</title>
+    <meta name="description" content="Premium audio equipment and high-end headphones.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">AURA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon" id="nav-cart-btn">Cart (0)</a>
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">&#9776;</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content" id="page-content">
+
+        <section class="hero-basic" style="padding-top: 140px; padding-bottom: 40px; background: none;">
+            <h1 style="font-size: 2.5rem;">Secure Checkout</h1>
+            <p>Step 1 of 2: Shipping Details</p>
+        </section>
+        <section class="container" style="padding-bottom: 80px; max-width: 800px;">
+            <form action="checkout-payment.html" style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 40px; box-shadow: var(--shadow-soft);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">First Name</label>
+                        <input type="text" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Last Name</label>
+                        <input type="text" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Street Address</label>
+                    <input type="text" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">City</label>
+                        <input type="text" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">State</label>
+                        <select style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);"><option>California</option><option>New York</option><option>Texas</option></select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">ZIP Code</label>
+                        <input type="text" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Continue to Payment</button>
+            </form>
+        </section>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>AURA</h3>
+                <p>Uncompromised clarity. Minimalist design. The future of audio.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="shop.html">All Products</a>
+                <a href="cart.html">Shopping Cart</a>
+                <a href="checkout-shipping.html">Checkout</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact Support</a>
+                <a href="faq.html">FAQ</a>
+                <a href="blog.html">Blog</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Info</h4>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="personas.html">UX Personas</a>
+                <a href="design-system.html">Design System</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Audio Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

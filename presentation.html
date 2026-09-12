@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aura Audio | UI/UX Project Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f13; overflow: hidden; }
+        
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide-inner {
+            display: flex;
+            width: 90vw;
+            max-width: 1600px;
+            height: 80vh;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .screenshot-container {
+            width: 60%;
+            height: 100%;
+            background: #f4f4f7;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-right: 1px solid #eaeaea;
+        }
+
+        /* Responsive iframe scaling */
+        .live-iframe {
+            width: 1440px;
+            height: 900px; 
+            transform: scale(0.65); 
+            transform-origin: center center;
+            border: none;
+            pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        @media (max-width: 1400px) { .live-iframe { transform: scale(0.55); } }
+        @media (max-width: 1200px) { .live-iframe { transform: scale(0.45); } }
+
+        .content-container {
+            width: 40%;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .page-url { font-size: 1.1rem; color: #888; margin-bottom: 20px; font-family: monospace; letter-spacing: 1px; }
+        h2 { font-size: 3rem; margin-bottom: 25px; color: #111; line-height: 1.1; letter-spacing: -1px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 35px; }
+        .ui-ux-tag { padding: 8px 18px; background: #f0f0f5; color: #333; border-radius: 30px; font-size: 1rem; font-weight: 600; }
+        p { font-size: 1.3rem; line-height: 1.7; color: #444; }
+        
+        .pagination-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active { background: #fff; transform: scale(1.3); }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+        .fullscreen-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        .fullscreen-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Fullscreen overrides */
+        :fullscreen .slide-inner {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            max-width: none;
+        }
+        :fullscreen .pagination-bar {
+            display: none;
+        }
+        :fullscreen .fullscreen-btn {
+            opacity: 0; /* Hide unless hovered */
+        }
+        :fullscreen .fullscreen-btn:hover {
+            opacity: 1;
+        }
+
+        .controls-hint {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+
+        .download-btn {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            background: #fff;
+            color: #111;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            z-index: 100;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            font-family: inherit;
+        }
+        .download-btn:hover { transform: scale(1.05); }
+
+        @media print {
+            @page { size: A3 landscape; margin: 0; }
+            body { background: #fff; overflow: visible !important; }
+            .slides-container { position: static; height: auto; overflow: visible; }
+            .slide { 
+                position: relative !important; 
+                opacity: 1 !important; 
+                transform: none !important; 
+                width: 420mm !important; 
+                height: 297mm !important; 
+                page-break-after: always;
+                background: #fff;
+            }
+            .slide-inner { 
+                width: 100% !important; 
+                height: 100% !important; 
+                max-width: none !important; 
+                border-radius: 0 !important; 
+                box-shadow: none !important; 
+            }
+            .screenshot-container { background: #f4f4f7 !important; border-right: 1px solid #eaeaea !important; }
+            .pagination-bar, .controls-hint, .download-btn { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+    </button>
+    <div class="slides-container" id="slides-container">
+
+        <div class="slide active">
+            <div class="slide-inner">
+                <iframe style="width: 100%; height: 100%; flex: 1; border: none; background: #fff;" src="title.html"></iframe>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="index.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/index.html</div>
+                    <h2>Home Page Strategy</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Visual Hierarchy</span><span class="ui-ux-tag">Call to Action</span><span class="ui-ux-tag">First Impression</span>
+                    </div>
+                    <p>The home page acts as the primary hook for users. By utilizing a high-contrast, minimalist hero banner with immense negative space, we instantly convey the brand's 'premium luxury' positioning. The primary CTA (Shop Collection) is placed dead center, reducing cognitive load and driving immediate conversion.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="shop.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/shop.html</div>
+                    <h2>Product Catalog UX</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Grid Layout</span><span class="ui-ux-tag">Information Architecture</span><span class="ui-ux-tag">Scalability</span>
+                    </div>
+                    <p>The shop utilizes a consistent 3-column CSS Grid layout that scales perfectly across devices. Products are presented with vast white space to emphasize the hardware design. Pricing is displayed prominently below clear, legible typography to prevent 'price shock' and manage user expectations early in the flow.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="product-p1.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/product-p1.html</div>
+                    <h2>Product Detail Page (PDP) - Pro Max</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Tabbed Navigation</span><span class="ui-ux-tag">Interactive Elements</span><span class="ui-ux-tag">F-Pattern Reading</span>
+                    </div>
+                    <p>The PDP uses a split-screen design. The high-resolution product image remains fixed on the left while detailed, tabbed content (Description, Reviews, Warranty, Returns) scrolls on the right. This tab system prevents endless vertical scrolling (scroll fatigue) while providing deep, contextual information on demand.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="product-p2.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/product-p2.html</div>
+                    <h2>Product Detail Page - Studio</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Consistency</span><span class="ui-ux-tag">Component Reusability</span><span class="ui-ux-tag">Visual Anchor</span>
+                    </div>
+                    <p>Demonstrating the scalability of the PDP template. The exact same UI framework beautifully accommodates a completely different product aesthetic, proving that the underlying wireframe is robust and adaptable without requiring unique coding per item.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="product-p3.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/product-p3.html</div>
+                    <h2>Product Detail Page - Lite</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Grid Flexibility</span><span class="ui-ux-tag">Content Reflow</span><span class="ui-ux-tag">Hierarchy</span>
+                    </div>
+                    <p>The Aethereus Lite page continues the consistent user flow. The Add to Cart button remains persistently above the fold, ensuring that regardless of which tab the user interacts with, the primary conversion action is never obscured.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="product-p4.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/product-p4.html</div>
+                    <h2>Product Detail Page - Soundbar</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Cross-Category UX</span><span class="ui-ux-tag">Responsive Images</span><span class="ui-ux-tag">Whitespace</span>
+                    </div>
+                    <p>The Aura Soundbar X utilizes a vastly different aspect ratio for its primary image. The UI seamlessly adapts to this change by leveraging CSS flexbox constraints, ensuring the layout never breaks even when presenting non-standard hardware shapes.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="cart.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/cart.html</div>
+                    <h2>Cart & Order Review</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Friction Reduction</span><span class="ui-ux-tag">Microcopy</span><span class="ui-ux-tag">Clear Affordance</span>
+                    </div>
+                    <p>The cart interface is designed for absolute clarity. Large, distinct typography separates product names from their prices. A prominent, high-contrast 'Proceed to Checkout' button provides a clear next step, while dynamic JavaScript instantly updates sub-totals, reinforcing system status visibility.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="checkout-shipping.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/checkout-shipping.html</div>
+                    <h2>Checkout Flow: Shipping</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Chunking</span><span class="ui-ux-tag">Form UX</span><span class="ui-ux-tag">Progress Disclosure</span>
+                    </div>
+                    <p>Checkout is broken into distinct phases (Shipping -> Payment) to prevent form fatigue. This concept, known as 'chunking', drastically reduces cart abandonment rates. The single-column form layout ensures a smooth vertical eye-tracking path for the user.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="checkout-payment.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/checkout-payment.html</div>
+                    <h2>Checkout Flow: Payment</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Trust Signals</span><span class="ui-ux-tag">Visual Prompts</span><span class="ui-ux-tag">Security</span>
+                    </div>
+                    <p>The payment page features a dummy QR code integration to simulate modern, frictionless mobile wallet payments. By simplifying the interface at the moment of transaction, we reduce user anxiety and increase the perception of platform security and stability.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="checkout-success.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/checkout-success.html</div>
+                    <h2>Post-Purchase Experience</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Positive Reinforcement</span><span class="ui-ux-tag">Next Steps</span><span class="ui-ux-tag">Confirmation</span>
+                    </div>
+                    <p>The success page provides immediate emotional gratification and system confirmation. It clears the local cart state via JavaScript and offers clear navigational exits ('Return Home', 'View Orders') to keep the user engaged in the ecosystem.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="about.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/about.html</div>
+                    <h2>Brand Storytelling</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Emotional Connection</span><span class="ui-ux-tag">Typography</span><span class="ui-ux-tag">Imagery</span>
+                    </div>
+                    <p>The 'About Us' page shifts the focus from conversion to brand building. A centered, narrow max-width text column optimizes reading length (ideal character count per line), while the high-end headphone imagery reinforces the engineering excellence narrative.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="reviews.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/reviews.html</div>
+                    <h2>Social Proof & Trust</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Social Proof</span><span class="ui-ux-tag">Authenticity</span><span class="ui-ux-tag">Grid Alignment</span>
+                    </div>
+                    <p>User reviews are vital for high-ticket items. We utilize a masonry-style flex/grid hybrid to display authentic-looking avatars and distinct star ratings. The golden accent color for the stars draws the eye immediately, validating the product quality through community consensus.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="blog.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/blog.html</div>
+                    <h2>Content Strategy Hub</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Content Discovery</span><span class="ui-ux-tag">Card UI</span><span class="ui-ux-tag">Thumbnail Banners</span>
+                    </div>
+                    <p>The blog index uses a Card UI pattern. Distinct product banners act as thumbnails, creating strong visual anchors. Clear categorization ('Product Update', 'Education') above the titles helps users quickly scan and filter content based on their intent.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="blog-post-1.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/blog-post-1.html</div>
+                    <h2>Article Readability</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Typography Scaling</span><span class="ui-ux-tag">Line Height</span><span class="ui-ux-tag">Focus</span>
+                    </div>
+                    <p>The individual blog post layout heavily restricts the maximum width of the text block to around 800px. This prevents horizontal reading strain. Large, stylized blockquotes break up the monotony of the text and highlight key product features.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="blog-post-2.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/blog-post-2.html</div>
+                    <h2>Educational Content</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Value Addition</span><span class="ui-ux-tag">Brand Authority</span><span class="ui-ux-tag">Pacing</span>
+                    </div>
+                    <p>By providing educational content (e.g., explaining ANC physics), the brand establishes itself as an authority, not just a retailer. The clean layout ensures that complex information is easily digested, building long-term user trust.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="login.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/login.html</div>
+                    <h2>Authentication: Login</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Frictionless Entry</span><span class="ui-ux-tag">Form Design</span><span class="ui-ux-tag">Error Prevention</span>
+                    </div>
+                    <p>The login page is aggressively simplified to prevent cognitive overload. Generous padding inside the input fields makes the targets easy to tap on mobile, while the centralized layout keeps focus entirely on the authentication task.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="register.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/register.html</div>
+                    <h2>Authentication: Register</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Onboarding</span><span class="ui-ux-tag">Clarity</span><span class="ui-ux-tag">Minimal Fields</span>
+                    </div>
+                    <p>Registration requires the absolute minimum amount of information (Name, Email, Password) to lower the barrier to entry. This adherence to 'Hick’s Law' (reducing choices/fields) drastically improves user onboarding conversion rates.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="profile.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/profile.html</div>
+                    <h2>User Dashboard</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Dashboard UI</span><span class="ui-ux-tag">Personalization</span><span class="ui-ux-tag">Quick Actions</span>
+                    </div>
+                    <p>The account dashboard acts as a personalized command center. It uses an off-canvas or sidebar-style secondary navigation (Profile, Orders, Wishlist) to organize complex settings into manageable, distinct views.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="orders.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/orders.html</div>
+                    <h2>Order History View</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Data Visualization</span><span class="ui-ux-tag">Status Indicators</span><span class="ui-ux-tag">List Design</span>
+                    </div>
+                    <p>Orders are presented in a clean, chronological list. Key information (Order ID, Status, Total) is surfaced immediately without requiring clicks, allowing users to rapidly parse their past interactions and track current shipments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="wishlist.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/wishlist.html</div>
+                    <h2>Saved Items (Wishlist)</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Retention Strategy</span><span class="ui-ux-tag">Micro-Interactions</span><span class="ui-ux-tag">Desire Paths</span>
+                    </div>
+                    <p>The wishlist functions as an intermediate step between 'browsing' and 'buying'. By allowing users to save items for later, we significantly decrease the hard bounce rate and create an organic reason for the user to return to the site.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="personas.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/personas.html</div>
+                    <h2>UX Personas Documentation</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Research Artifact</span><span class="ui-ux-tag">Empathy</span><span class="ui-ux-tag">Target Audience</span>
+                    </div>
+                    <p>This page documents the foundational UX research behind the project. Presenting personas in a card format makes the target demographic (e.g., audiophiles, professionals) easily scannable and grounds design decisions in user reality.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="design-system.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/design-system.html</div>
+                    <h2>Design System</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Consistency</span><span class="ui-ux-tag">Component Library</span><span class="ui-ux-tag">Scalability</span>
+                    </div>
+                    <p>A dedicated design system page proves the project's scalability. By defining typography scales, color palettes (CSS variables), and button states in one place, we ensure absolute visual consistency across all 27 pages of the platform.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="terms.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/terms.html</div>
+                    <h2>Terms of Service</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Legibility</span><span class="ui-ux-tag">Line Length</span><span class="ui-ux-tag">Typography</span>
+                    </div>
+                    <p>Legal pages are notoriously difficult to read. By enforcing a strict maximum character width and increasing the line height (leading), we transform dense legal text into an accessible, readable document that respects the user's time.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="privacy.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/privacy.html</div>
+                    <h2>Privacy Policy</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Trust Signals</span><span class="ui-ux-tag">Transparency</span><span class="ui-ux-tag">Formatting</span>
+                    </div>
+                    <p>In an era of data anxiety, presenting a clear, well-structured Privacy Policy is a vital UI/UX trust signal. Clear h3 sub-headers allow users to skim directly to the information they care about most regarding their personal data.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="faq.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/faq.html</div>
+                    <h2>FAQ & Support</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Self-Service</span><span class="ui-ux-tag">Information Architecture</span><span class="ui-ux-tag">Clarity</span>
+                    </div>
+                    <p>The FAQ reduces customer support friction by providing self-service answers. Bold question headers followed by slightly muted answer text creates a clear visual hierarchy, allowing users to rapidly scan for their specific issue.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="contact.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/contact.html</div>
+                    <h2>Contact Interface</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Accessibility</span><span class="ui-ux-tag">Direct Communication</span><span class="ui-ux-tag">Form UI</span>
+                    </div>
+                    <p>A straightforward contact form placed alongside physical/email addresses provides multiple avenues of support. The expansive message text area provides a clear affordance that the user is encouraged to explain their issue fully.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <div class="screenshot-container">
+                    <iframe class="live-iframe" src="404.html"></iframe>
+                </div>
+                <div class="content-container">
+                    <div class="page-url">/404.html</div>
+                    <h2>404 Error State</h2>
+                    <div class="tags">
+                        <span class="ui-ux-tag">Error Recovery</span><span class="ui-ux-tag">Brand Voice</span><span class="ui-ux-tag">Wayfinding</span>
+                    </div>
+                    <p>A 404 page should never be a dead end. By using on-brand messaging ('Lost in the Soundscape') and a clear primary CTA to return home, we transform user frustration into an opportunity for continued engagement.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide ">
+            <div class="slide-inner">
+                <iframe style="width: 100%; height: 100%; flex: 1; border: none; background: #fff;" src="thank-you.html"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="pagination-bar">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot " onclick="goToSlide(1)"></div>
+        <div class="dot " onclick="goToSlide(2)"></div>
+        <div class="dot " onclick="goToSlide(3)"></div>
+        <div class="dot " onclick="goToSlide(4)"></div>
+        <div class="dot " onclick="goToSlide(5)"></div>
+        <div class="dot " onclick="goToSlide(6)"></div>
+        <div class="dot " onclick="goToSlide(7)"></div>
+        <div class="dot " onclick="goToSlide(8)"></div>
+        <div class="dot " onclick="goToSlide(9)"></div>
+        <div class="dot " onclick="goToSlide(10)"></div>
+        <div class="dot " onclick="goToSlide(11)"></div>
+        <div class="dot " onclick="goToSlide(12)"></div>
+        <div class="dot " onclick="goToSlide(13)"></div>
+        <div class="dot " onclick="goToSlide(14)"></div>
+        <div class="dot " onclick="goToSlide(15)"></div>
+        <div class="dot " onclick="goToSlide(16)"></div>
+        <div class="dot " onclick="goToSlide(17)"></div>
+        <div class="dot " onclick="goToSlide(18)"></div>
+        <div class="dot " onclick="goToSlide(19)"></div>
+        <div class="dot " onclick="goToSlide(20)"></div>
+        <div class="dot " onclick="goToSlide(21)"></div>
+        <div class="dot " onclick="goToSlide(22)"></div>
+        <div class="dot " onclick="goToSlide(23)"></div>
+        <div class="dot " onclick="goToSlide(24)"></div>
+        <div class="dot " onclick="goToSlide(25)"></div>
+        <div class="dot " onclick="goToSlide(26)"></div>
+        <div class="dot " onclick="goToSlide(27)"></div>
+        <div class="dot " onclick="goToSlide(28)"></div>
+
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < totalSlides - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

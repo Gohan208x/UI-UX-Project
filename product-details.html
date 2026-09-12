@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Audio | Aethereus Pro Max</title>
+    <meta name="description" content="Premium audio equipment and high-end headphones.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">AURA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon" id="nav-cart-btn">Cart (0)</a>
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">&#9776;</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content" id="page-content">
+
+        <section class="container" style="padding-top: 140px; padding-bottom: 80px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+                <div style="background: var(--bg-secondary); padding: 40px; border-radius: var(--radius-md);">
+                    <img src="images/product_headphone_1789213583711.jpg" alt="Aethereus Pro Max" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                </div>
+                <div>
+                    <p style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 10px;">Over-Ear Headphones</p>
+                    <h1 style="font-size: 3rem; margin-bottom: 20px;">Aethereus Pro Max</h1>
+                    <p style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 30px;">$549.00</p>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px;">Experience industry-leading noise cancellation combined with unmatched audio fidelity. The Aethereus Pro Max redefines the wireless listening experience with custom acoustic architecture and computational audio.</p>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h4 style="margin-bottom: 10px;">Color</h4>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #000; border: 2px solid var(--accent-primary); cursor: pointer;"></div>
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #e0e0e0; cursor: pointer;"></div>
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #2c3e50; cursor: pointer;"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="handleAddToCartClick(event, 'p1')" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-bottom: 20px;">Add to Cart</button>
+                    
+                    <ul style="color: var(--text-muted); list-style-position: inside; font-size: 0.9rem;">
+                        <li style="margin-bottom: 8px;">Free shipping and returns</li>
+                        <li style="margin-bottom: 8px;">2-year limited warranty</li>
+                        <li>Up to 40 hours of listening time</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>AURA</h3>
+                <p>Uncompromised clarity. Minimalist design. The future of audio.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="shop.html">All Products</a>
+                <a href="cart.html">Shopping Cart</a>
+                <a href="checkout-shipping.html">Checkout</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact Support</a>
+                <a href="faq.html">FAQ</a>
+                <a href="blog.html">Blog</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Info</h4>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="personas.html">UX Personas</a>
+                <a href="design-system.html">Design System</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Audio Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
