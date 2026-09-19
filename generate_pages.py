@@ -78,6 +78,17 @@ pages_data = {
     "index.html": {
         "title": "Home",
         "content": """
+        <div id="project-credits-modal" class="modal-overlay">
+            <div class="modal-content">
+                <p style="margin-bottom: 20px; color: var(--text-main); font-weight: 500;">This is a Minor/Major Project by:</p>
+                <h3>Shivam Tanwar</h3>
+                <p>A2305324022</p>
+                <p>B.Tech - IT</p>
+                <p>2024-2028</p>
+                <button id="close-credits-btn" class="btn btn-primary" style="margin-top: 25px; width: 100%;">OK</button>
+            </div>
+        </div>
+        
         <section class="hero-basic" style="padding: 0; min-height: 85vh; display: flex; align-items: center; background: url('images/hero_banner.jpg') center/cover no-repeat; position: relative;">
             <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.4);"></div>
             <div class="container" style="position: relative; z-index: 10; text-align: left; width: 100%;">

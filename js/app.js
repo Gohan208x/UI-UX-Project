@@ -176,3 +176,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// 7. CREDITS MODAL LOGIC
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('project-credits-modal');
+    const closeBtn = document.getElementById('close-credits-btn');
+    
+    if (modal && closeBtn) {
+        // Show modal on load
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 100);
+        
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+    }
+});
